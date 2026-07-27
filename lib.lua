@@ -5129,7 +5129,7 @@ end
 library.keybind_list = library.KeybindList
 
 function library:CreateSettingsPage(window, keybind_list, watermark)
-	local page = window:Page({ Name = "Settings", Icon = "rbxassetid://109514269737059" })
+	local page = window:Page({ Name = "Settings", Icon = "rbxassetid://106205298246017" })
 	local config_sec = page:Section({ Name = "Configuration", Side = "left" })
 	local menu_sec = page:Section({ Name = "Menu & UI", Side = "right" })
 
