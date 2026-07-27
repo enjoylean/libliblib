@@ -2003,8 +2003,8 @@ function library:tab(properties)
 		Name = "ColumnsHolder",
 		ClipsDescendants = true,
 		BackgroundTransparency = 1,
-		Position = UDim2.new(0, 4, 0, 4),
-		Size = UDim2.new(1, -8, 1, -8),
+		Position = UDim2.new(0, 5, 0, 5),
+		Size = UDim2.new(1, -10, 1, -10),
 		BorderSizePixel = 0,
 	})
 
@@ -2035,6 +2035,8 @@ function library:tab(properties)
 		library:create("UIPadding", {
 			Parent = left,
 			Name = "",
+			PaddingTop = UDim.new(0, 5),
+			PaddingLeft = UDim.new(0, 5),
 			PaddingBottom = UDim.new(0, 10),
 			PaddingRight = UDim.new(0, 4),
 		})
@@ -2063,6 +2065,8 @@ function library:tab(properties)
 		library:create("UIPadding", {
 			Parent = right,
 			Name = "",
+			PaddingTop = UDim.new(0, 5),
+			PaddingLeft = UDim.new(0, 5),
 			PaddingBottom = UDim.new(0, 10),
 			PaddingRight = UDim.new(0, 4),
 		})
@@ -2078,8 +2082,8 @@ function library:tab(properties)
 	function cfg:SubPage(sub_props)
 		local sub_name = sub_props.name or sub_props.Name or "SubPage"
 		subpage_bar.Visible = true
-		scrolling_columns.Position = UDim2.new(0, 4, 0, 34)
-		scrolling_columns.Size = UDim2.new(1, -8, 1, -38)
+		scrolling_columns.Position = UDim2.new(0, 5, 0, 36)
+		scrolling_columns.Size = UDim2.new(1, -10, 1, -41)
 
 		left.Visible = false
 		right.Visible = false
@@ -2734,6 +2738,9 @@ function library:hitpart_picker(properties)
 end
 
 function library:toggle(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local cfg = {
 		enabled = properties.enabled or nil,
 		name = properties.name or "Toggle",
@@ -2745,7 +2752,7 @@ function library:toggle(properties)
 
 	-- Instances
 	local object = library:create("TextButton", {
-		Parent = self.holder,
+		Parent = target_holder,
 		Name = "",
 		FontFace = library.font,
 		TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -2883,6 +2890,9 @@ function library:toggle(properties)
 end
 
 function library:slider(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local cfg = {
 		name = properties.name or nil,
 		suffix = properties.suffix or "",
@@ -2903,7 +2913,7 @@ function library:slider(properties)
 	local bottom_components
 	if cfg.name then
 		object = library:create("TextLabel", {
-			Parent = self.holder,
+			Parent = target_holder,
 			Name = "",
 			FontFace = library.font,
 			TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -3120,6 +3130,9 @@ function library:slider(properties)
 end
 
 function library:dropdown(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local cfg = {
 		name = properties.name or nil,
 		flag = properties.flag or tostring(math.random(1, 9999999)),
@@ -3140,7 +3153,7 @@ function library:dropdown(properties)
 	local object
 	if cfg.name then
 		object = library:create("TextLabel", {
-			Parent = self.holder,
+			Parent = target_holder,
 			Name = "",
 			FontFace = library.font,
 			TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -3428,6 +3441,9 @@ function library:dropdown(properties)
 end
 
 function library:colorpicker(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local cfg = {
 		name = properties.name or nil,
 		flag = properties.flag or tostring(2 ^ 789),
@@ -3436,8 +3452,8 @@ function library:colorpicker(properties)
 		callback = properties.callback or function() end,
 		animation = "normal",
 		saved_color,
-		right_holder = self.right_holder or nil,
-		holder = self.holder or nil,
+		right_holder = properties.right_holder or (self and self.right_holder) or nil,
+		holder = target_holder or nil,
 	}
 
 	flags[cfg.flag] = {}
@@ -3453,7 +3469,7 @@ function library:colorpicker(properties)
 	local right_components
 	if cfg.name then
 		local object = library:create("TextLabel", {
-			Parent = self.holder,
+			Parent = target_holder,
 			Name = "",
 			FontFace = library.font,
 			TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -4173,6 +4189,10 @@ function library:colorpicker(properties)
 end
 
 function library:keybind(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+	local target_right_holder = properties.right_holder or (self and self.right_holder) or target_holder
+
 	local cfg = {
 		flag = properties.flag or tostring(2 ^ math.random(1, 30) * 3),
 		keybind_name = properties.keybind_name or nil,
@@ -4199,7 +4219,7 @@ function library:keybind(properties)
 	local right_components
 	if cfg.name then
 		local object = library:create("TextLabel", {
-			Parent = self.holder,
+			Parent = target_holder,
 			Name = "",
 			FontFace = library.font,
 			TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -4236,7 +4256,7 @@ function library:keybind(properties)
 	end
 
 	local keybind = library:create("TextButton", {
-		Parent = cfg.name and right_components or self.right_holder,
+		Parent = cfg.name and right_components or target_right_holder,
 		Name = "",
 		FontFace = library.font,
 		TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -4629,13 +4649,16 @@ function library:keybind(properties)
 end
 
 function library:button(properties)
+	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local cfg = {
 		callback = properties.callback or function() end,
 		name = properties.text or properties.name or "Button",
 	}
 
 	local button_inline = library:create("Frame", {
-		Parent = self.holder,
+		Parent = target_holder,
 		Name = "",
 		Position = UDim2.new(0, -15, 0, 2),
 		BorderColor3 = Color3.fromRGB(19, 19, 19),
@@ -4667,6 +4690,8 @@ end
 
 function library:textbox(properties)
 	properties = properties or {}
+	local target_holder = properties.holder or (self and self.holder)
+
 	local raw_ph = properties.Placeholder
 		or properties.placeholder
 		or properties.PlaceholderText
@@ -4684,7 +4709,7 @@ function library:textbox(properties)
 	}
 
 	local textbox_inline = library:create("Frame", {
-		Parent = self.holder,
+		Parent = target_holder,
 		Name = "",
 		Position = UDim2.new(0, -15, 0, 2),
 		BorderColor3 = Color3.fromRGB(19, 19, 19),
