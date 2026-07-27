@@ -5432,10 +5432,38 @@ function library:chat(properties)
 	return cfg
 end
 library.Chat = library.chat
+library.chat = library.chat
 
 library.Window = library.window
+library.window = library.window
 library.Tab = library.tab
+library.tab = library.tab
 library.Page = library.tab
 library.page = library.tab
+
+library.Colorpicker = library.colorpicker
+library.colorpicker = library.colorpicker
+library.ColorPicker = library.colorpicker
+
+library.Keybind = library.keybind
+library.keybind = library.keybind
+
+library.Toggle = library.toggle
+library.toggle = library.toggle
+
+library.Slider = library.slider
+library.slider = library.slider
+
+library.Dropdown = library.dropdown
+library.dropdown = library.dropdown
+
+library.Textbox = library.textbox
+library.textbox = library.textbox
+
+library.Button = library.button
+library.button = library.button
+
+library.Section = library.section
+library.section = library.section
 
 return library
