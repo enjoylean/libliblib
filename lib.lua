@@ -388,11 +388,11 @@ function library:apply_theme(instance, theme, property)
 end
 
 function library:update_theme(theme, color)
-	for _, property in next, themes.utility[theme] do
-		for m, object in next, property do
-			if object[_] == themes.preset[theme] or object.ClassName == "UIGradient" then
-				object[_] = color
-			end
+	for prop_name, instances in next, themes.utility[theme] do
+		for _, object in next, instances do
+			pcall(function()
+				object[prop_name] = color
+			end)
 		end
 	end
 
@@ -2070,6 +2070,9 @@ function library:tab(properties)
 			PaddingBottom = UDim.new(0, 10),
 			PaddingRight = UDim.new(0, 4),
 		})
+
+		library:apply_theme(left, "accent", "ScrollBarImageColor3")
+		library:apply_theme(right, "accent", "ScrollBarImageColor3")
 
 		return left, right
 	end
