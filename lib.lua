@@ -4660,9 +4660,9 @@ function library:button(properties)
 	local button_inline = library:create("Frame", {
 		Parent = target_holder,
 		Name = "",
-		Position = UDim2.new(0, -15, 0, 2),
+		Position = UDim2.new(0, 0, 0, 2),
 		BorderColor3 = Color3.fromRGB(19, 19, 19),
-		Size = UDim2.new(1, -26, 0, 16),
+		Size = UDim2.new(1, 0, 0, 20),
 		BorderSizePixel = 0,
 		BackgroundColor3 = Color3.fromRGB(8, 8, 8),
 	})
@@ -5180,24 +5180,6 @@ function library:CreateSettingsPage(window, keybind_list, watermark)
 				library.global_chat = library:chat()
 			end
 			library.global_chat:SetVisible(v)
-		end,
-	})
-
-	config_sec:Textbox({
-		Name = "Supabase URL",
-		Flag = "Supabase_Url_Input",
-		Placeholder = "https://xyz.supabase.co",
-		Callback = function(t)
-			library.supabase_url = t
-		end,
-	})
-
-	config_sec:Textbox({
-		Name = "Supabase Key",
-		Flag = "Supabase_Key_Input",
-		Placeholder = "anon-key...",
-		Callback = function(t)
-			library.supabase_key = t
 		end,
 	})
 
