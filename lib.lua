@@ -2742,11 +2742,11 @@ function library:toggle(properties)
 	local target_holder = properties.holder or (self and self.holder)
 
 	local cfg = {
-		enabled = properties.enabled or nil,
-		name = properties.name or "Toggle",
-		flag = properties.flag or tostring(math.random(1, 9999999)),
-		callback = properties.callback or function() end,
-		default = properties.default or false,
+		enabled = (properties.Enabled ~= nil and properties.Enabled) or (properties.enabled ~= nil and properties.enabled) or nil,
+		name = properties.Name or properties.name or properties.Text or properties.text or "Toggle",
+		flag = properties.Flag or properties.flag or tostring(math.random(1, 9999999)),
+		callback = properties.Callback or properties.callback or function() end,
+		default = (properties.Default ~= nil and properties.Default) or (properties.default ~= nil and properties.default) or false,
 		previous_holder = self,
 	}
 
@@ -2894,18 +2894,18 @@ function library:slider(properties)
 	local target_holder = properties.holder or (self and self.holder)
 
 	local cfg = {
-		name = properties.name or nil,
-		suffix = properties.suffix or "",
-		flag = properties.flag or tostring(2 ^ 789),
-		callback = properties.callback or function() end,
+		name = properties.Name or properties.name or properties.Text or properties.text or nil,
+		suffix = properties.Suffix or properties.suffix or "",
+		flag = properties.Flag or properties.flag or tostring(2 ^ 789),
+		callback = properties.Callback or properties.callback or function() end,
 
-		min = properties.min or properties.minimum or 0,
-		max = properties.max or properties.maximum or 100,
-		intervals = properties.interval or properties.decimal or 1,
-		default = properties.default or 10,
+		min = properties.Min or properties.min or properties.minimum or 0,
+		max = properties.Max or properties.max or properties.maximum or 100,
+		intervals = properties.Decimals or properties.decimals or properties.interval or properties.decimal or 1,
+		default = properties.Default or properties.default or 10,
 
 		dragging = false,
-		value = properties.default or 10,
+		value = properties.Default or properties.default or 10,
 
 		previous_holder = self,
 	}
@@ -3134,12 +3134,12 @@ function library:dropdown(properties)
 	local target_holder = properties.holder or (self and self.holder)
 
 	local cfg = {
-		name = properties.name or nil,
-		flag = properties.flag or tostring(math.random(1, 9999999)),
+		name = properties.Name or properties.name or properties.Text or properties.text or nil,
+		flag = properties.Flag or properties.flag or tostring(math.random(1, 9999999)),
 
-		items = properties.items or { "1", "2", "3" },
-		callback = properties.callback or function() end,
-		multi = properties.multi or false,
+		items = properties.Options or properties.options or properties.Values or properties.values or properties.Items or properties.items or { "1", "2", "3" },
+		callback = properties.Callback or properties.callback or function() end,
+		multi = properties.Multi or properties.multi or false,
 
 		open = false,
 		option_instances = {},
@@ -3147,7 +3147,7 @@ function library:dropdown(properties)
 
 		previous_holder = self,
 	}
-	cfg.default = properties.default or (cfg.multi and { cfg.items[1] }) or cfg.items[1] or nil
+	cfg.default = properties.Default or properties.default or (cfg.multi and { cfg.items[1] }) or cfg.items[1] or nil
 
 	local bottom_components
 	local object
@@ -3445,11 +3445,11 @@ function library:colorpicker(properties)
 	local target_holder = properties.holder or (self and self.holder)
 
 	local cfg = {
-		name = properties.name or nil,
-		flag = properties.flag or tostring(2 ^ 789),
-		color = properties.color or properties.default or Color3.new(1, 1, 1), -- Default to white color if not provided
-		alpha = properties.alpha or 1,
-		callback = properties.callback or function() end,
+		name = properties.Name or properties.name or nil,
+		flag = properties.Flag or properties.flag or tostring(2 ^ 789),
+		color = properties.Default or properties.default or properties.Color or properties.color or Color3.new(1, 1, 1),
+		alpha = properties.Alpha or properties.alpha or 1,
+		callback = properties.Callback or properties.callback or function() end,
 		animation = "normal",
 		saved_color,
 		right_holder = properties.right_holder or (self and self.right_holder) or nil,
@@ -4194,16 +4194,16 @@ function library:keybind(properties)
 	local target_right_holder = properties.right_holder or (self and self.right_holder) or target_holder
 
 	local cfg = {
-		flag = properties.flag or tostring(2 ^ math.random(1, 30) * 3),
-		keybind_name = properties.keybind_name or nil,
-		callback = properties.callback or function() end,
+		flag = properties.Flag or properties.flag or tostring(2 ^ math.random(1, 30) * 3),
+		keybind_name = properties.KeybindName or properties.keybind_name or nil,
+		callback = properties.Callback or properties.callback or function() end,
 		open = false,
 		binding = nil,
-		name = properties.name or nil,
-		key = properties.default or properties.key or nil,
-		mode = properties.mode or "toggle",
-		active = properties.default or false,
-		display = properties.displayName or properties.display or properties.name or nil,
+		name = properties.Name or properties.name or nil,
+		key = properties.Default or properties.default or properties.Key or properties.key or nil,
+		mode = properties.Mode or properties.mode or "toggle",
+		active = (properties.Default ~= nil and properties.Default) or (properties.default ~= nil and properties.default) or false,
+		display = properties.DisplayName or properties.displayName or properties.display or properties.Name or properties.name or nil,
 		hold_instances = {},
 	}
 
@@ -4653,8 +4653,8 @@ function library:button(properties)
 	local target_holder = properties.holder or (self and self.holder)
 
 	local cfg = {
-		callback = properties.callback or function() end,
-		name = properties.text or properties.name or "Button",
+		callback = properties.Callback or properties.callback or function() end,
+		name = properties.Text or properties.text or properties.Name or properties.name or "Button",
 	}
 
 	local button_inline = library:create("Frame", {
