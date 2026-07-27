@@ -5038,6 +5038,54 @@ function library:Watermark(name_text, icon_id)
 	wm_obj.holder = holder
 	return wm_obj
 end
+function library:notification(properties)
+	local text = type(properties) == "string" and properties or (properties and (properties.text or properties.Text or properties.message or properties[1])) or "Notification"
+	local duration = (type(properties) == "table" and (properties.duration or properties.time or properties[2])) or 3
+
+	task.spawn(function()
+		local notif_frame = library:create("Frame", {
+			Parent = library.gui,
+			Name = "Notification",
+			BackgroundTransparency = 0.2,
+			BackgroundColor3 = Color3.fromRGB(24, 24, 30),
+			BorderColor3 = Color3.fromRGB(12, 12, 16),
+			BorderSizePixel = 1,
+			Position = UDim2.new(1, -220, 1, -60 - (#library.notifications * 32)),
+			Size = UDim2.new(0, 200, 0, 26),
+			ZIndex = 150,
+		})
+		table.insert(library.notifications, notif_frame)
+
+		local accent = library:create("Frame", {
+			Parent = notif_frame,
+			Name = "",
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, 2, 1, 0),
+			BackgroundColor3 = themes.preset.accent,
+		})
+		library:apply_theme(accent, "accent", "BackgroundColor3")
+
+		local label = library:create("TextLabel", {
+			Parent = notif_frame,
+			Name = "",
+			FontFace = library.font,
+			TextColor3 = Color3.fromRGB(220, 220, 230),
+			Text = text,
+			TextSize = 11,
+			BackgroundTransparency = 1,
+			Position = UDim2.new(0, 8, 0, 0),
+			Size = UDim2.new(1, -12, 1, 0),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextTruncate = Enum.TextTruncate.AtEnd,
+		})
+
+		task.wait(duration)
+		notif_frame:Destroy()
+		local idx = table.find(library.notifications, notif_frame)
+		if idx then table.remove(library.notifications, idx) end
+	end)
+end
+library.Notification = library.notification
 library.watermark = library.Watermark
 
 function library:KeybindList()
@@ -5466,5 +5514,10 @@ library.button = library.button
 
 library.Section = library.section
 library.section = library.section
+
+library.Theme = {
+	Accent = themes.preset.accent,
+}
+library.theme = library.Theme
 
 return library
