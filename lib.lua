@@ -418,12 +418,14 @@ function library:create(instance, options)
 end
 --
 
+local safe_gui_parent = (gethui and gethui()) or (syn and syn.protect_gui and coregui) or (pcall(function() return coregui.Name end) and coregui) or lp:WaitForChild("PlayerGui")
+
 library.gui = library:create("ScreenGui", {
 	Enabled = true,
-	Parent = coregui,
-	Name = "",
-	DisplayOrder = 2,
-	ZIndexBehavior = 1,
+	Parent = safe_gui_parent,
+	Name = "avidware_ui",
+	DisplayOrder = 999,
+	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 })
 
 -- library functions
@@ -449,8 +451,14 @@ function library:window(properties)
 		BackgroundColor3 = Color3.fromRGB(24, 24, 30),
 	})
 	table.insert(library.main_frame, inline1)
-	local WINDOW_PATH = inline1
-	library:make_resizable(inline1)
+	library.toggle_key = properties.ToggleKey or properties.toggle_key or Enum.KeyCode.Insert
+
+	library:connection(uis.InputBegan, function(input)
+		if input.KeyCode == library.toggle_key or input.KeyCode == Enum.KeyCode.Insert or input.KeyCode == Enum.KeyCode.RightShift then
+			inline1.Visible = not inline1.Visible
+			library.panel_open = inline1.Visible
+		end
+	end)
 
 	local accent_line = library:create("Frame", {
 		Parent = inline1,
@@ -4583,11 +4591,9 @@ function library:keybind(properties)
 				cfg.set(input.KeyCode)
 			elseif
 				input.UserInputType == Enum.UserInputType.MouseButton1
-				or Enum.UserInputType.MouseButton2
-				or Enum.UserInputType.MouseButton3
+				or input.UserInputType == Enum.UserInputType.MouseButton2
+				or input.UserInputType == Enum.UserInputType.MouseButton3
 			then
-				-- I put this giant elseif to avoid having "mousemovement" as a keybind
-
 				cfg.set(input.UserInputType)
 			end
 
