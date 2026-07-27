@@ -63,6 +63,7 @@ getgenv().library = {
 	},
 	font,
 }
+library.__index = library
 
 local flags = library.flags
 local config_flags = library.config_flags
